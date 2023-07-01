@@ -1,4 +1,4 @@
-# BaekjoonHub
+# Problem Solving
 PS한 코드를 BaekjoonHub를 통해서 아카이빙
 
 ## 삼성 SW 역량테스트 B형 취득
