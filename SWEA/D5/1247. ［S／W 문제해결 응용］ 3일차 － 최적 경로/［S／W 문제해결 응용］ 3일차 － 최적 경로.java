@@ -1,41 +1,76 @@
-def distance(x1, y1, x2, y2):
-    return abs(x1 - x2) + abs(y1 - y2)
+import java.util.*;
 
-def cal_dis(idx):
-    dis = distance(x_s, y_s, x[idx[0]], y[idx[0]]) + distance(x[idx[N - 1]], y[idx[N - 1]], x_d, y_d)
-    for i in range(N - 1):
-        dis += distance(x[idx[i]], y[idx[i]], x[idx[i + 1]], y[idx[i + 1]])
-    return dis
-
-def next_permutation(idx):
-    for i in range(N - 1, 0, -1):
-        if idx[i] > idx[i - 1]:
-            j = N - 1
-            while(idx[i - 1] >= idx[j]):
-                j -= 1
-            idx[i - 1], idx[j] = idx[j], idx[i - 1]
-            idx = idx[:i] + sorted(idx[i:])
-            return idx
-
-def answer(idx):
-    ans = cal_dis(idx)
-    end = sorted(idx, reverse = True)
-    while idx != end:
-        idx = next_permutation(idx)
-        ans = min(ans, cal_dis(idx))
-    return ans
-
-T = int(input())
-for case_num in range(1, T + 1):
-    N = int(input())
-    user_input = list(map(int,input().split()))
-    x_s, y_s = user_input[0], user_input[1]
-    x_d, y_d = user_input[2], user_input[3]
-    x = []
-    y = []
-    idx = []
-    for i in range(N):
-        x.append(user_input[2 * i + 4])
-        y.append(user_input[2 * i + 5])
-        idx.append(i)
-    print(f"#{case_num} {answer(idx)}")
+public class Solution {
+	static int N, ans;
+	static int[][] inputCoo, coo;
+	static boolean[] isUsed;
+	public static void main(String[] args) {
+    	Scanner sc = new Scanner(System.in);
+    	
+    	// 테스트 케이스의 수
+    	int T = sc.nextInt();
+    	
+    	// 각 테스트 케이스 별로 실행
+    	for (int t=1; t<=T; t++) {
+    		
+    		// 고객의 수
+    		N = sc.nextInt();
+    		
+    		inputCoo = new int[N+2][2];
+    		coo = new int[N+2][2];
+    		
+    		// 회사 좌표
+    		for (int i=0; i<2; i++) {
+    			inputCoo[0][i] = sc.nextInt();
+    		}
+    		coo[0] = inputCoo[0];
+    		// 집 좌표
+    		for (int i=0; i<2; i++) {
+    			inputCoo[N+1][i] = sc.nextInt();
+    		}
+    		coo[N+1] = inputCoo[N+1];
+    		// 고객 좌표
+    		for (int i=1; i<=N; i++) {
+    			for (int j=0; j<2; j++) {
+    				inputCoo[i][j] = sc.nextInt();
+    			}
+    		}
+    		
+    		// 고른 고객의 좌표를 표시할 boolean 배열
+    		isUsed = new boolean[N+1];
+    		
+    		// ans를 Integer.MAX_VALUE로 초기화
+    		ans = Integer.MAX_VALUE;
+    		
+    		// 백트래킹
+    		backTracking(0, 0);
+    		
+    		// 답 출력
+    		System.out.println("#" + t + " " + ans);
+    	}
+    }
+	
+	private static void backTracking(int k, int sum) {
+		if (sum > ans) return;
+		
+		if (k == N) {
+			if (ans > sum + calDis(coo[N], coo[N+1])) {
+				ans = sum + calDis(coo[N], coo[N+1]);
+			}
+			return;
+		}
+		
+		// k+1번째로 들릴 집 고르기
+		for (int i=1; i<=N; i++) {
+			if (isUsed[i]) continue;
+			isUsed[i] = true;
+			coo[k+1] = inputCoo[i];
+			backTracking(k+1, sum + calDis(coo[k], coo[k+1]));
+			isUsed[i] = false;
+		}
+	}
+	
+	private static int calDis(int[] c1, int[] c2) {
+		return Math.abs(c1[0]-c2[0]) + Math.abs(c1[1]-c2[1]);
+	}
+}
