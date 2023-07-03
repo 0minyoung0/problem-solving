@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -33,20 +34,26 @@ public class Solution {
 			int c2 = Integer.parseInt(st.nextToken());
 			
 			// 소들의 위치
-			List<Integer> z1 = new ArrayList<>(N);
+//			List<Integer> z1 = new ArrayList<>();
+			int[] z1 = new int[N];
 			st = new StringTokenizer(br.readLine());
 			for (int i=0; i<N; i++) {
-				z1.add(Integer.parseInt(st.nextToken()));
+//				z1.add(Integer.parseInt(st.nextToken()));
+				z1[i] = Integer.parseInt(st.nextToken());
 			}
-			Collections.sort(z1);
+//			Collections.sort(z1);
+			Arrays.parallelSort(z1);
 			
 			// 말들의 위치
-			List<Integer> z2 = new ArrayList<>(M);
+//			List<Integer> z2 = new ArrayList<>();
+			int[] z2 = new int[M];
 			st = new StringTokenizer(br.readLine());
 			for (int i=0; i<M; i++) {
-				z2.add(Integer.parseInt(st.nextToken()));
+//				z2.add(Integer.parseInt(st.nextToken()));
+				z2[i] = Integer.parseInt(st.nextToken());
 			}
-			Collections.sort(z2);
+//			Collections.sort(z2);
+			Arrays.parallelSort(z2);
 			
 			// 최소 거리를 저장할 변수
 			int minDis = Integer.MAX_VALUE;
@@ -58,7 +65,8 @@ public class Solution {
 			int p1 = 0;
 			int p2 = 0;
 			while (p1 < N) {
-				int temp = Math.abs(z1.get(p1) - z2.get(p2));
+//				int temp = Math.abs(z1.get(p1) - z2.get(p2));
+				int temp = Math.abs(z1[p1] - z2[p2]);
 				if (minDis > temp) {
 					minDis = temp;
 					cnt = 1;
@@ -67,7 +75,8 @@ public class Solution {
 				
 				if (p2 == M-1) p1++;
 				else if (p1 == N-1) p2++;
-				else if (z1.get(p1) <= z2.get(p2)) p1++;
+//				else if (z1.get(p1) <= z2.get(p2)) p1++;
+				else if (z1[p1] <= z2[p2]) p1++;
 				else p2++;
 			}
 			
