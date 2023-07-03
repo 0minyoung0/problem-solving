@@ -33,7 +33,7 @@ public class Solution {
 			int c2 = Integer.parseInt(st.nextToken());
 			
 			// 소들의 위치
-			List<Integer> z1 = new ArrayList<>();
+			List<Integer> z1 = new ArrayList<>(N);
 			st = new StringTokenizer(br.readLine());
 			for (int i=0; i<N; i++) {
 				z1.add(Integer.parseInt(st.nextToken()));
@@ -41,7 +41,7 @@ public class Solution {
 			Collections.sort(z1);
 			
 			// 말들의 위치
-			List<Integer> z2 = new ArrayList<>();
+			List<Integer> z2 = new ArrayList<>(M);
 			st = new StringTokenizer(br.readLine());
 			for (int i=0; i<M; i++) {
 				z2.add(Integer.parseInt(st.nextToken()));
