@@ -50,6 +50,8 @@ public class Main {
         // 답 출력
         System.out.print(sb);
     }
+
+    // 구간 최솟값 세그먼트 트리 만들기
     public static void init(long[] a, long[] tree, int node, int start, int end) {
         if (start == end) tree[node] = a[start];
         else {
@@ -58,13 +60,8 @@ public class Main {
             tree[node] = Math.min(tree[node * 2], tree[node * 2 + 1]);
         }
     }
-    public static long query(long[] tree, int node, int start, int end, int left, int right) {
-        if (end < left || right < start) return 0;
-        if (left <= start && end <= right) return tree[node];
-        long lmin = query(tree, node * 2, start, (start + end) / 2, left, right);
-        long rmin = query(tree, node * 2 + 1, (start + end) / 2 + 1, end, left, right);
-        return lmin == 0 ? rmin : rmin == 0 ? lmin : Math.min(lmin, rmin);
-    }
+
+    // 수정 된 값 세그먼트 트리에 적용하기
     public static void update(long[] a, long[] tree, int node, int start, int end, int index, long val) {
         if (index < start || end < index) return;
         if (start == end) {
@@ -75,5 +72,14 @@ public class Main {
         update(a, tree, node * 2, start, (start + end) / 2, index, val);
         update(a, tree, node * 2 + 1, (start + end) / 2 + 1, end, index, val);
         tree[node] = Math.min(tree[node * 2], tree[node * 2 + 1]);
+    }
+
+    // 세그먼트 트리에서 구간 최솟값 구하기
+    public static long query(long[] tree, int node, int start, int end, int left, int right) {
+        if (end < left || right < start) return 0;
+        if (left <= start && end <= right) return tree[node];
+        long lmin = query(tree, node * 2, start, (start + end) / 2, left, right);
+        long rmin = query(tree, node * 2 + 1, (start + end) / 2 + 1, end, left, right);
+        return lmin == 0 ? rmin : rmin == 0 ? lmin : Math.min(lmin, rmin);
     }
 }
