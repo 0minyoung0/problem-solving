@@ -13,10 +13,10 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
 
         // 배열에 N개의 수 저장
-        long[] a = new long[N];
+        int[] a = new int[N];
         st = new StringTokenizer(br.readLine());
         for (int i=0; i<N; i++) {
-            a[i] = Long.parseLong(st.nextToken());
+            a[i] = Integer.parseInt(st.nextToken());
         }
 
         // 쿼리의 개수
@@ -25,7 +25,7 @@ public class Main {
         // 세그먼트 트리 만들기
         int h = (int)Math.ceil(Math.log(N) / Math.log(2));
         int tree_size = 1 << (h + 1);
-        long[] tree = new long[tree_size];
+        int[] tree = new int[tree_size];
         init(a, tree, 1, 0, N - 1);
 
         // M개의 쿼리 처리
@@ -35,7 +35,7 @@ public class Main {
             // 수 변경
             if (st.nextToken().equals("1")) {
                 int index = Integer.parseInt(st.nextToken()) - 1;
-                long val = Long.parseLong(st.nextToken());
+                int val = Integer.parseInt(st.nextToken());
                 update(a, tree, 1, 0, N-1, index, val);
             }
 
@@ -52,7 +52,7 @@ public class Main {
     }
 
     // 구간 최솟값 세그먼트 트리 만들기
-    public static void init(long[] a, long[] tree, int node, int start, int end) {
+    public static void init(int[] a, int[] tree, int node, int start, int end) {
         if (start == end) tree[node] = a[start];
         else {
             init(a, tree, node * 2, start, (start + end) / 2);
@@ -62,7 +62,7 @@ public class Main {
     }
 
     // 수정 된 값 세그먼트 트리에 적용하기
-    public static void update(long[] a, long[] tree, int node, int start, int end, int index, long val) {
+    public static void update(int[] a, int[] tree, int node, int start, int end, int index, int val) {
         if (index < start || end < index) return;
         if (start == end) {
             a[index] = val;
@@ -75,11 +75,11 @@ public class Main {
     }
 
     // 세그먼트 트리에서 구간 최솟값 구하기
-    public static long query(long[] tree, int node, int start, int end, int left, int right) {
-        if (end < left || right < start) return 0;
+    public static int query(int[] tree, int node, int start, int end, int left, int right) {
+        if (end < left || right < start) return 1000000001;
         if (left <= start && end <= right) return tree[node];
-        long lmin = query(tree, node * 2, start, (start + end) / 2, left, right);
-        long rmin = query(tree, node * 2 + 1, (start + end) / 2 + 1, end, left, right);
-        return lmin == 0 ? rmin : rmin == 0 ? lmin : Math.min(lmin, rmin);
+        int lmin = query(tree, node * 2, start, (start + end) / 2, left, right);
+        int rmin = query(tree, node * 2 + 1, (start + end) / 2 + 1, end, left, right);
+        return Math.min(lmin, rmin);
     }
 }
