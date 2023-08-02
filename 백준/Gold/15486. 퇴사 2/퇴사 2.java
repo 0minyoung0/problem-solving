@@ -1,32 +1,41 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
+
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
-        int n = Integer.parseInt(br.readLine());
-        int[][] arr = new int[n+1][2];
-        for (int i=1; i<=n; i++) {
-        	st = new StringTokenizer(br.readLine());
-        	arr[i][0] = Integer.parseInt(st.nextToken());
-        	arr[i][1] = Integer.parseInt(st.nextToken());
+
+        // 전체 날짜 수
+        int N = Integer.parseInt(br.readLine());
+        // 상담을 완료하는데 걸리는 기간
+        int[] T = new int[N + 1];
+        // 상담을 했을 때 받을 수 있는 금액
+        int[] P = new int[N + 1];
+        for (int i = 1; i <= N; i++) {
+            st = new StringTokenizer(br.readLine());
+            T[i] = Integer.parseInt(st.nextToken());
+            P[i] = Integer.parseInt(st.nextToken());
         }
-        int[] p = new int[n+2];
-        for (int i=n; i>=1; i--) {
-        	if (i+arr[i][0]-1 > n) {
-        		p[i] = p[i+1];
-        	}
-        	else {
-        		p[i] = Math.max(p[i+1], arr[i][1] + p[i+arr[i][0]]);
-        	}
+
+        // 특정 일자부터 N일자 까지 상담 일정에서의 최대 수익
+        int[] profit = new int[N + 2];
+        for (int i = N; i >= 1; i--) {
+
+            // 해당 날짜에 상담을 시작하면 N+1일자에 퇴사를 못하는 경우
+            if (i + T[i] > N + 1) {
+                profit[i] = profit[i + 1];
+            }
+
+            // 해당 날짜에 상담을 안한 경우와 상담을 한 경우 중 큰 수익 값 저장
+            else {
+                profit[i] = Math.max(profit[i + 1], P[i] + profit[i + T[i]]);
+            }
         }
-        int ans = 0;
-        for (int i=1; i<=n; i++) {
-        	if (p[i] > ans) {
-        		ans = p[i];
-        	}
-        }
-        System.out.println(ans);
+        
+        // 최대 수익 출력
+        System.out.println(profit[1]);
     }
 }
