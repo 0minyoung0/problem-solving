@@ -27,11 +27,12 @@ public class Main {
         for (int i=1; i<=N; i++) {
             data[i] = new TreeMap();
         }
-        while (M-- > 0) {
+        for (int i=0; i<M; i++) {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
             int c = Integer.parseInt(st.nextToken());
+            if (data[a].containsKey(b)) c += data[a].get(b);
             data[a].put(b, c);
         }
     }
@@ -56,7 +57,10 @@ public class Main {
         while (c < C && !data[turn].isEmpty()) {
             int key = data[turn].firstKey();
             int value = data[turn].remove(key);
-            if (value > C - c) value = C - c;
+            if (value > C - c) {
+                data[turn].put(key, value - (C - c));
+                value = C - c;
+            }
             c += value;
             if (truck.containsKey(key)) value += truck.get(key);
             truck.put(key, value);
@@ -72,7 +76,7 @@ public class Main {
             while (c > C) {
                 int k = truck.lastKey();
                 int v = truck.get(k);
-                if (c - v > C) {
+                if (c - v >= C) {
                     truck.remove(k);
                     c -= v;
                 }
