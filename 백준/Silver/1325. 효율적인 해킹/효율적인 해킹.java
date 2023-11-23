@@ -12,6 +12,7 @@ public class Main {
     static int N, M;
     static List<Integer>[] graph;
     static Queue<Integer> q = new ArrayDeque<>();
+    static boolean[][] vis;
     static List<Integer> ansList = new ArrayList<>();
     static int max;
 
@@ -35,19 +36,19 @@ public class Main {
             int b = Integer.parseInt(st.nextToken());
             graph[b].add(a);
         }
+        vis = new boolean[N+1][N+1];
     }
     private static void findAns() {
         for (int cur=1; cur<=N; cur++) {
             q.offer(cur);
-            boolean[] vis = new boolean[N+1];
-            vis[cur] = true;
+            vis[cur][cur] = true;
             int temp = 1;
             while (!q.isEmpty()) {
                 int c = q.poll();
                 for (int nx : graph[c]) {
-                    if (vis[nx]) continue;
+                    if (vis[cur][nx]) continue;
                     q.offer(nx);
-                    vis[nx] = true;
+                    vis[cur][nx] = true;
                     temp++;
                 }
             }
