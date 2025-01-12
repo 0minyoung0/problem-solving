@@ -5,48 +5,28 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
-        StringBuilder sb = new StringBuilder();
 
-        // 자연수의 개수
-        int n = Integer.parseInt(br.readLine());
-        
-        // 자연수를 해쉬맵과 리스트에 저장 후 정렬
-        HashMap<Integer, Integer> hm = new HashMap<>();
-        ArrayList<Integer> list = new ArrayList<>();
+        int N = Integer.parseInt(br.readLine());
+
+        HashMap<Integer, Integer> map = new HashMap<>();
         st = new StringTokenizer(br.readLine());
-        for (int i=0; i<n; i++) {
-        	int temp = Integer.parseInt(st.nextToken());
-        	if (!hm.containsKey(temp)) {
-        		hm.put(temp, 1);
-        		list.add(temp);
-        	}else {
-        		hm.put(temp, hm.get(temp)+1);
-        	}
+
+        while (N-- > 0) {
+            int num = Integer.parseInt(st.nextToken());
+            if (map.containsKey(num)) map.put(num, map.get(num) + 1);
+            else map.put(num, 1);
         }
-        Collections.sort(list);
-        
-        // 존재 여부를 파악할 숫자의 개수
-        int m = Integer.parseInt(br.readLine());
-        
-        // 존재 여부 파악하기
+
+        int M = Integer.parseInt(br.readLine());
+
+        StringBuilder sb = new StringBuilder();
         st = new StringTokenizer(br.readLine());
-        for (int i=0; i<m; i++) {
-        	int temp = Integer.parseInt(st.nextToken());
-        	if (binarySearch(temp, list, 0, list.size()-1)) {
-        		sb.append(hm.get(temp)).append(" ");
-        	}else {
-        		sb.append("0 ");
-        	}
+
+        while (M-- > 0) {
+            int num = Integer.parseInt(st.nextToken());
+            sb.append(map.getOrDefault(num, 0)).append(" ");
         }
-        
-        // 답 출력
-        System.out.println(sb);
-    }
-    private static boolean binarySearch(int x, ArrayList<Integer> list, int s, int e) {
-    	if (s > e) return false;
-    	int mid = (s + e) / 2;
-    	if (x == list.get(mid)) return true;
-    	if (x < list.get(mid)) return binarySearch(x, list, s, mid-1);
-    	else return binarySearch(x, list, mid+1, e);
+
+        System.out.print(sb);
     }
 }
