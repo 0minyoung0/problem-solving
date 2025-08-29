@@ -8,12 +8,12 @@ public class Main {
         StringTokenizer st;
         int T = Integer.parseInt(br.readLine());
 
-        List<int[]> list;
-        Set<Integer> set;
+        List<int[]> list = new ArrayList<>();
+        Set<Integer> set = new HashSet<>();
 
         while (T-- > 0) {
-            list = new ArrayList<>();
-            set = new HashSet<>();
+            list.clear();
+            set.clear();
             int N = Integer.parseInt(br.readLine());
 
             for (int i = 0; i < N; i++) {
@@ -28,31 +28,45 @@ public class Main {
             int ans = 0;
 
             for (int i = 0; i < list.size(); i++) {
+                int x1 = list.get(i)[0];
+                int y1 = list.get(i)[1];
                 for (int j = i + 1; j < list.size(); j++) {
-                    int dx = list.get(i)[0] - list.get(j)[0];
-                    int dy = list.get(i)[1] - list.get(j)[1];
+                    int x2 = list.get(j)[0];
+                    int y2 = list.get(j)[1];
 
-                    // +dy, -dx
-                    int nx1 = list.get(i)[0] + dy;
-                    int ny1 = list.get(i)[1] - dx;
-                    int nx2 = list.get(j)[0] + dy;
-                    int ny2 = list.get(j)[1] - dx;
-                    if (set.contains(nx1 * 20_001 + ny1) && set.contains(nx2 * 20_001 + ny2)) {
-                        if (ans < dx * dx + dy * dy) {
-                            ans = dx * dx + dy * dy;
-                        }
+                    int dx = x1 - x2;
+                    int dy = y1 - y2;
+
+                    if ((x1 + x2 + dy) % 2 == 1 || (y1 + y2 + dx) % 2 == 1) {
                         continue;
                     }
 
-                    // -dy, +dx
-                    nx1 = list.get(i)[0] - dy;
-                    ny1 = list.get(i)[1] + dx;
-                    nx2 = list.get(j)[0] - dy;
-                    ny2 = list.get(j)[1] + dx;
-                    if (set.contains(nx1 * 20_001 + ny1) && set.contains(nx2 * 20_001 + ny2)) {
-                        if (ans < dx * dx + dy * dy) {
-                            ans = dx * dx + dy * dy;
-                        }
+                    int nx = (x1 + x2 + dy) / 2;
+                    if (nx < -10_000 || nx > 10_000) {
+                        continue;
+                    }
+                    int ny = (y1 + y2 - dx) / 2;
+                    if (ny < -10_000 || ny > 10_000) {
+                        continue;
+                    }
+                    if (!set.contains(nx * 20_001 + ny)) {
+                        continue;
+                    }
+
+                    nx -= dy;
+                    if (nx < -10_000 || nx > 10_000) {
+                        continue;
+                    }
+                    ny += dx;
+                    if (ny < -10_000 || ny > 10_000) {
+                        continue;
+                    }
+                    if (!set.contains(nx * 20_001 + ny)) {
+                        continue;
+                    }
+
+                    if (ans < (dx * dx + dy * dy) / 2) {
+                        ans = (dx * dx + dy * dy) / 2;
                     }
                 }
             }
